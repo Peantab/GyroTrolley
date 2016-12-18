@@ -47,8 +47,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         {
 			sinceCol++;
             // read inputs
-            float h = CrossPlatformInputManager.GetAxis("Horizontal");
-			float v = 1;/*rossPlatformInputManager.GetAxis("Vertical");*/
+			float h = Control.mSides;
+			float v = 1+Control.mForward;/*rossPlatformInputManager.GetAxis("Vertical");*/
 
       
                 m_Move = v*Vector3.forward + h*Vector3.right;
