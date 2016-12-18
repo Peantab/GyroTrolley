@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO.Ports;
 using System.Threading;
-public class Control : MonoBehaviour {
+public class Control{
 
     const double FORWARD_DIVIDER = 7.0;
     const double SIDES_DIVIDER = 5.0;
@@ -13,8 +13,7 @@ public class Control : MonoBehaviour {
         sp = new SerialPort("COM6", 9600);
     }
     static void Connect() {
-        System.Console.WriteLine("Connection started");
-        while (true)
+        Debug.Log("Connection started");
             try {
                 if (!sp.IsOpen)
                     sp.Open();
@@ -22,12 +21,11 @@ public class Control : MonoBehaviour {
                 sp.Handshake = Handshake.None;
                 serialThread = new Thread(recData);
                 serialThread.Start();
-                System.Console.WriteLine("Port Opened!");
-                break;
+                Debug.Log("Port Opened!");
             } catch (System.SystemException e) {
                 if (sp.IsOpen)
                     sp.Close();
-                System.Console.WriteLine(e.Message + "PS. Chuj ci w dupe.\n");
+                Debug.Log(e.Message + "PS. Chuj ci w dupe.\n");
                 //Thread.Sleep(3000);
             }
     }
@@ -49,10 +47,10 @@ public class Control : MonoBehaviour {
         }
     }
     static void parseValues(string str) {
-        System.Console.WriteLine("Received: " + str);
+        Debug.Log("Received: " + str);
         double forward, sides;
         string[] slices = str.Split(',');
-        System.Console.WriteLine(slices[2] + " " + slices[4]);
+        Debug.Log(slices[2] + " " + slices[4]);
         sides = double.Parse(slices[2].Replace('.', ','));
         forward = double.Parse(slices[4].Replace('.', ','));
         if (forward > FORWARD_DIVIDER) {
@@ -67,13 +65,13 @@ public class Control : MonoBehaviour {
         }
         forward /= FORWARD_DIVIDER;
         sides /= SIDES_DIVIDER;
-        System.Console.WriteLine("Forward: " + forward.ToString() + "\n" + "Sides: " + sides.ToString() + "\n");
+        Debug.Log("Forward: " + forward.ToString() + "\n" + "Sides: " + sides.ToString() + "\n");
     }
-    static void OnProcessExit(object sender, System.EventArgs e) {
-        System.Console.WriteLine("I'm out of here");
+    static void OnApplicationQuit() {
+        Debug.Log("I'm out of here");
         if (sp.IsOpen)
             sp.Close();
-        Thread.Sleep(1000);
+        //Thread.Sleep(1000);
     }
 
     // Use this for initialization
