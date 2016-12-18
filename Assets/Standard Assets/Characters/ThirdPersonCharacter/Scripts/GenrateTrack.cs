@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GenrateTrack : MonoBehaviour {
@@ -6,15 +7,16 @@ public class GenrateTrack : MonoBehaviour {
 	public const int MAX = 451;
 	public const float chunk_size_coef = 10f;
 	private GameObject[] chunkBuffer = new GameObject[MAX];
-	private int index = 20;
-	private ulong total = 20;
+	private int index = 15;
+	private ulong total = 15;
 	// Use this for initialization
 	void Start () {
+        System.Random rand = new System.Random();
 		for (int i=0; i<(index-1); i++) {
-			chunkBuffer[i] = GameObject.Instantiate(chunks[0]);
+			chunkBuffer[i] = GameObject.Instantiate(chunks[rand.Next() % 2]);
 			chunkBuffer[i].transform.position = new Vector3(0f,0f,i*chunk_size_coef);
 		}
-        chunkBuffer[index-1] = GameObject.Instantiate(chunks[1]);
+        chunkBuffer[index-1] = GameObject.Instantiate(chunks[2]);
         chunkBuffer[index-1].transform.position = new Vector3(0f, 0f, (index-1) * chunk_size_coef);
     }
 	
